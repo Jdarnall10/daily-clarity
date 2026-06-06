@@ -412,10 +412,9 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   </div>
   <div class="nav-right">
     <span class="inbox-nav-badge" id="nav-badge">0</span>
-    <span class="conn-pill disconnected" id="conn-pill" onclick="openConfig()" style="cursor:pointer" title="Click to configure Supabase">○ not connected</span>
+    <span class="conn-pill disconnected" id="conn-pill">○ offline</span>
     <button class="btn btn-dim" onclick="window.print()">Print</button>
     <button class="btn btn-outline" onclick="openSend()">↗ Send</button>
-    <button class="btn btn-outline" onclick="openConfig()" id="cfg-btn">⚙</button>
     <button class="btn btn-accent" onclick="newDay()">+ New day</button>
   </div>
 </nav>
@@ -432,9 +431,9 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
       <div class="field-hint">Settings → API → Project URL</div>
     </div>
     <div class="field">
-      <label>Supabase Anon Key</label>
-      <input id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
-      <div class="field-hint">Settings → API → Project API keys → anon public</div>
+      <label>Supabase Publishable Key</label>
+      <input id="cfg-key" placeholder="sb_publishable_..." />
+      <div class="field-hint">Settings → API Keys → Publishable key</div>
     </div>
     <div class="field">
       <label>Zapier Webhook URL <span style="color:var(--rule-2)">(optional — paste after you create it)</span></label>
@@ -484,15 +483,6 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   <div class="focus-bar">
     <span class="focus-label">Today's focus</span>
     <input class="focus-input" id="focus-input" placeholder="What would make today a win?" />
-  </div>
-
-  <!-- CONNECT BANNER — visible when not connected -->
-  <div id="connect-banner" style="background:#2C1A0A;border:1.5px solid #6A3010;border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
-    <div>
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#C07040;margin-bottom:3px;">Supabase not connected</div>
-      <div style="font-size:13px;color:#A08060;">Connect to enable real-time Inbox capture from Slack &amp; email.</div>
-    </div>
-    <button class="btn" onclick="openConfig()" style="background:#B84C1C;color:white;flex-shrink:0;">⚙ Connect Supabase</button>
   </div>
 
   <!-- INBOX -->
@@ -577,6 +567,11 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
       </div>
     </div>
   </div>
+  <!-- FOOTER -->
+  <div style="margin-top:40px;padding-top:16px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-3);letter-spacing:.04em;">Daily Clarity</span>
+    <button id="settings-btn" style="background:none;border:none;font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-3);cursor:pointer;letter-spacing:.04em;padding:4px 8px;border-radius:5px;transition:all .15s;" onmouseover="this.style.background='var(--rule)';this.style.color='var(--ink)'" onmouseout="this.style.background='none';this.style.color='var(--ink-3)'">⚙ settings</button>
+  </div>
 
 </main>
 
@@ -615,12 +610,6 @@ function setPill(state, label) {
   const p = document.getElementById('conn-pill');
   p.className = `conn-pill ${state}`;
   p.textContent = label;
-  // hide the connect banner once connected
-  const banner = document.getElementById('connect-banner');
-  if (banner) banner.style.display = (state === 'connected') ? 'none' : 'flex';
-  // update the config button label
-  const cfgBtn = document.getElementById('cfg-btn');
-  if (cfgBtn) cfgBtn.textContent = state === 'connected' ? '⚙' : '⚙';
 }
 
 async function initSupabase() {
@@ -959,9 +948,23 @@ function editStep(pi,si,el)  { S.projects[pi].steps[si].text=el.textContent.trim
 function delStep(pi,si)      { S.projects[pi].steps.splice(si,1); renderProjects(); save(); }
 
 // ─── OVERLAYS ───
-function openSend()    { document.getElementById('send-overlay').classList.add('open'); }
-function closeOverlay(id){ document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function openConfig() {
+  document.getElementById('cfg-url').value     = CFG.url  || '';
+  document.getElementById('cfg-key').value     = CFG.key  || '';
+  document.getElementById('cfg-webhook').value = CFG.webhook || '';
+  const el = document.getElementById('config-overlay');
+  el.style.display = 'flex';
+}
+function openSend() {
+  document.getElementById('send-overlay').style.display = 'flex';
+}
+function closeOverlay(id) {
+  document.getElementById(id).style.display = 'none';
+}
+// close on backdrop click
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.style.display = 'none'; });
+});
 
 // ─── SEND ───
 function buildSummary() {
@@ -1066,16 +1069,11 @@ load();
 initDates();
 seed();
 renderAll();
-document.getElementById('focus-input').value=S.focus||'';
-document.getElementById('focus-input').addEventListener('input',e=>{S.focus=e.target.value;save();});
-// hide connect banner if already configured
-if(CFG.url && CFG.key) {
-  initSupabase();
-  const b = document.getElementById('connect-banner');
-  if(b) b.style.display = 'none';
-} else {
-  document.getElementById('inbox-hint').textContent = 'Click "Connect Supabase" below to enable capture';
-}
+document.getElementById('focus-input').value = S.focus || '';
+document.getElementById('focus-input').addEventListener('input', e => { S.focus = e.target.value; save(); });
+document.getElementById('settings-btn').addEventListener('click', openConfig);
+if (CFG.url && CFG.key) initSupabase();
+else document.getElementById('inbox-hint').textContent = 'Connect Supabase via ⚙ settings (bottom of page)';
 </script>
 </body>
 </html>
