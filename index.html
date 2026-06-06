@@ -598,7 +598,7 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 <script>
 // ─── CONFIG ───
 let CFG = { url: '', key: '', webhook: '' };
-let supabase = null;
+let sbClient = null;
 let realtimeSub = null;
 
 function loadConfig() {
@@ -652,8 +652,8 @@ async function initSupabase() {
   if (st) st.textContent = 'Connecting…';
   try {
     if (!window.supabase) throw new Error('Supabase library not loaded — check your internet connection and reload');
-    supabase = window.supabase.createClient(CFG.url, CFG.key);
-    const { error } = await supabase.from('inbox_tasks').select('id').limit(1);
+    sbClient = window.supabase.createClient(CFG.url, CFG.key);
+    const { error } = await sbClient.from('inbox_tasks').select('id').limit(1);
     if (error) throw error;
     setPill('connected', '● connected');
     if (st) st.textContent = '✓ Connected!';
@@ -669,8 +669,8 @@ async function initSupabase() {
 }
 
 async function loadInboxFromDB() {
-  if (!supabase) return;
-  const { data, error } = await supabase
+  if (!sbClient) return;
+  const { data, error } = await sbClient
     .from('inbox_tasks')
     .select('*')
     .eq('sorted', false)
@@ -683,16 +683,16 @@ async function loadInboxFromDB() {
 }
 
 function subscribeRealtime() {
-  if (!supabase) return;
-  if (realtimeSub) supabase.removeChannel(realtimeSub);
-  realtimeSub = supabase
+  if (!sbClient) return;
+  if (realtimeSub) sbClient.removeChannel(realtimeSub);
+  realtimeSub = sbClient
     .channel('inbox-changes')
     .on('postgres_changes', {
       event: 'INSERT', schema: 'public', table: 'inbox_tasks'
     }, payload => {
       const r = payload.new;
       if (r.sorted) return;
-      S.inbox.push({ id: r.id, text: r.task_text, source: r.source || 'manual', db: true });
+      S.inbox.push({ id: r.id, text: r.task_task, source: r.source || 'manual', db: true });
       renderInbox();
       toast('📥 New task captured from ' + (r.source || 'external'));
     })
@@ -700,13 +700,13 @@ function subscribeRealtime() {
 }
 
 async function markSortedInDB(id) {
-  if (!supabase || typeof id !== 'number') return;
-  await supabase.from('inbox_tasks').update({ sorted: true }).eq('id', id);
+  if (!sbClient || typeof id !== 'number') return;
+  await sbClient.from('inbox_tasks').update({ sorted: true }).eq('id', id);
 }
 
 async function deleteFromDB(id) {
-  if (!supabase || typeof id !== 'number') return;
-  await supabase.from('inbox_tasks').delete().eq('id', id);
+  if (!sbClient || typeof id !== 'number') return;
+  await sbClient.from('inbox_tasks').delete().eq('id', id);
 }
 
 // ─── STATE ───
