@@ -408,15 +408,14 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 <nav class="nav">
   <div class="nav-brand">
     <span class="nav-logo">Daily Clarity</span>
-    <span class="nav-sub">Jordan</span>
+    <span class="nav-sub" id="nav-date"></span>
   </div>
-  <div class="nav-center" id="nav-date"></div>
   <div class="nav-right">
-    <span class="conn-pill disconnected" id="conn-pill">○ not connected</span>
     <span class="inbox-nav-badge" id="nav-badge">0</span>
-    <button class="btn btn-warn" onclick="openConfig()">⚙ Connect Supabase</button>
+    <span class="conn-pill disconnected" id="conn-pill" onclick="openConfig()" style="cursor:pointer" title="Click to configure Supabase">○ not connected</span>
     <button class="btn btn-dim" onclick="window.print()">Print</button>
-    <button class="btn btn-outline" onclick="openSend()">Send day</button>
+    <button class="btn btn-outline" onclick="openSend()">↗ Send</button>
+    <button class="btn btn-outline" onclick="openConfig()" id="cfg-btn">⚙</button>
     <button class="btn btn-accent" onclick="newDay()">+ New day</button>
   </div>
 </nav>
@@ -485,6 +484,15 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   <div class="focus-bar">
     <span class="focus-label">Today's focus</span>
     <input class="focus-input" id="focus-input" placeholder="What would make today a win?" />
+  </div>
+
+  <!-- CONNECT BANNER — visible when not connected -->
+  <div id="connect-banner" style="background:#2C1A0A;border:1.5px solid #6A3010;border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#C07040;margin-bottom:3px;">Supabase not connected</div>
+      <div style="font-size:13px;color:#A08060;">Connect to enable real-time Inbox capture from Slack &amp; email.</div>
+    </div>
+    <button class="btn" onclick="openConfig()" style="background:#B84C1C;color:white;flex-shrink:0;">⚙ Connect Supabase</button>
   </div>
 
   <!-- INBOX -->
@@ -607,6 +615,12 @@ function setPill(state, label) {
   const p = document.getElementById('conn-pill');
   p.className = `conn-pill ${state}`;
   p.textContent = label;
+  // hide the connect banner once connected
+  const banner = document.getElementById('connect-banner');
+  if (banner) banner.style.display = (state === 'connected') ? 'none' : 'flex';
+  // update the config button label
+  const cfgBtn = document.getElementById('cfg-btn');
+  if (cfgBtn) cfgBtn.textContent = state === 'connected' ? '⚙' : '⚙';
 }
 
 async function initSupabase() {
@@ -685,7 +699,7 @@ function initDates() {
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   document.getElementById('day-title').innerHTML = `${DAYS[n.getDay()]}, <em>${MONTHS[n.getMonth()]} ${n.getDate()}</em>`;
   document.getElementById('day-meta').innerHTML  = `${n.getFullYear()}&nbsp;·&nbsp;Week ${getWeek(n)}&nbsp;·&nbsp;Day ${getDOY(n)}`;
-  document.getElementById('nav-date').textContent = `${MONTHS[n.getMonth()].slice(0,3).toUpperCase()} ${n.getDate()}, ${n.getFullYear()}`;
+  document.getElementById('nav-date').textContent = `· ${MONTHS[n.getMonth()].slice(0,3)} ${n.getDate()}`;
 }
 function getWeek(d) {
   const u = new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
@@ -1054,8 +1068,14 @@ seed();
 renderAll();
 document.getElementById('focus-input').value=S.focus||'';
 document.getElementById('focus-input').addEventListener('input',e=>{S.focus=e.target.value;save();});
-if(CFG.url && CFG.key) initSupabase();
-else { document.getElementById('inbox-hint').textContent = 'Click "Connect Supabase" in the nav to enable capture'; }
+// hide connect banner if already configured
+if(CFG.url && CFG.key) {
+  initSupabase();
+  const b = document.getElementById('connect-banner');
+  if(b) b.style.display = 'none';
+} else {
+  document.getElementById('inbox-hint').textContent = 'Click "Connect Supabase" below to enable capture';
+}
 </script>
 </body>
 </html>
