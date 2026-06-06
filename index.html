@@ -8,34 +8,34 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --bg: #F2EDE4;
-  --surface: #FAF7F1;
-  --white: #FFFFFF;
-  --ink: #1C1A16;
-  --ink-2: #4A4640;
-  --ink-3: #8C887F;
-  --rule: #E2DAD0;
-  --rule-2: #CEC5B8;
+  --bg: #1E1C18;
+  --surface: #2A2720;
+  --white: #302D26;
+  --ink: #F0EAE0;
+  --ink-2: #C8C0B4;
+  --ink-3: #7A7468;
+  --rule: #3A3630;
+  --rule-2: #4A4640;
 
-  --inbox-bg: #FFF8EC;
-  --inbox-dot: #C47B1A;
-  --inbox-border: #F0D9A8;
+  --inbox-bg: #2E2616;
+  --inbox-dot: #D4901A;
+  --inbox-border: #5A4418;
 
-  --pro-bg: #EEF3FA;
-  --pro-dot: #1A4A8C;
-  --pro-border: #BDD0EC;
+  --pro-bg: #162030;
+  --pro-dot: #4A8AD4;
+  --pro-border: #1E3A58;
 
-  --personal-bg: #EDF6F0;
-  --personal-dot: #1A6635;
-  --personal-border: #AEDCBC;
+  --personal-bg: #162418;
+  --personal-dot: #4AAA6A;
+  --personal-border: #1E4224;
 
-  --goals-bg: #F6EFF9;
-  --goals-dot: #6A2A8C;
-  --goals-border: #D4AAEC;
+  --goals-bg: #201428;
+  --goals-dot: #A06AD4;
+  --goals-border: #3A1E58;
 
-  --projects-bg: #FDF1EE;
-  --projects-dot: #9C2A1A;
-  --projects-border: #F0B8AA;
+  --projects-bg: #281410;
+  --projects-dot: #D46A4A;
+  --projects-border: #4A1E14;
 
   --accent: #B84C1C;
   --shadow-sm: 0 1px 2px rgba(28,26,22,.06), 0 2px 8px rgba(28,26,22,.04);
@@ -48,13 +48,14 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 
 /* ── NAV ── */
 .nav {
-  background: var(--ink); height: 52px;
+  background: #141210; height: 52px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 28px; position: sticky; top: 0; z-index: 50;
+  border-bottom: 1px solid var(--rule);
 }
 .nav-brand { display: flex; align-items: baseline; gap: 10px; }
-.nav-logo { font-family: 'Instrument Serif', serif; font-size: 19px; color: #F2EDE4; letter-spacing: .01em; }
-.nav-sub { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300; color: #666; letter-spacing: .08em; text-transform: uppercase; }
+.nav-logo { font-family: 'Instrument Serif', serif; font-size: 19px; color: #F0EAE0; letter-spacing: .01em; }
+.nav-sub { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300; color: #4A4640; letter-spacing: .08em; text-transform: uppercase; }
 .nav-center { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300; color: #555; letter-spacing: .05em; text-transform: uppercase; }
 .nav-right { display: flex; gap: 8px; align-items: center; }
 
@@ -64,9 +65,9 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   padding: 3px 9px; border-radius: 20px; letter-spacing: .04em;
   transition: all .3s;
 }
-.conn-pill.disconnected { background: #2a2826; color: #666; }
+.conn-pill.disconnected { background: #2a2826; color: #555; }
 .conn-pill.connecting   { background: #3a3018; color: #a88030; }
-.conn-pill.connected    { background: #1a2e1a; color: #5a9a5a; }
+.conn-pill.connected    { background: #142814; color: #4a9a4a; }
 .conn-pill.error        { background: #2e1a1a; color: #9a5a5a; }
 
 .btn {
@@ -75,14 +76,14 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   font-family: 'Instrument Sans', sans-serif; font-size: 12px; font-weight: 500;
   cursor: pointer; border: none; transition: all .15s; letter-spacing: .01em; white-space: nowrap;
 }
-.btn-dim    { background: #262420; color: #999; }
-.btn-dim:hover { background: #302e2a; color: #ccc; }
+.btn-dim    { background: #2A2720; color: #7A7468; border: 1px solid #3A3630; }
+.btn-dim:hover { background: #34312A; color: #A09888; }
 .btn-accent { background: var(--accent); color: #fff; }
 .btn-accent:hover { background: #a04018; }
-.btn-outline { background: transparent; color: #888; border: 1px solid #333; }
-.btn-outline:hover { background: #1e1c18; color: #bbb; }
-.btn-warn { background: #3a1a08; color: #c07040; border: 1px solid #5a2a10; }
-.btn-warn:hover { background: #4a2010; color: #d08050; }
+.btn-outline { background: transparent; color: #7A7468; border: 1px solid #3A3630; }
+.btn-outline:hover { background: #2A2720; color: #C8C0B4; }
+.btn-warn { background: #2A1A08; color: #C07040; border: 1px solid #5a2a10; }
+.btn-warn:hover { background: #3a2010; color: #d08050; }
 
 .inbox-nav-badge {
   background: var(--inbox-dot); color: white;
@@ -100,10 +101,11 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 }
 .overlay.open { display: flex; }
 .modal {
-  background: var(--surface); border-radius: 16px;
+  background: #2A2720; border-radius: 16px;
   padding: 32px; width: 460px; max-width: 95vw;
-  box-shadow: var(--shadow-md); position: relative;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6); position: relative;
   max-height: 88vh; overflow-y: auto;
+  border: 1px solid var(--rule-2);
 }
 .modal h2 { font-family: 'Instrument Serif', serif; font-size: 22px; margin-bottom: 4px; }
 .modal-sub { font-size: 12px; color: var(--ink-3); margin-bottom: 22px; line-height: 1.55; }
@@ -121,10 +123,10 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   width: 100%; padding: 9px 12px;
   border: 1.5px solid var(--rule-2); border-radius: 7px;
   font-family: 'DM Mono', monospace; font-size: 12px;
-  background: var(--white); color: var(--ink); outline: none;
+  background: #1E1C18; color: var(--ink); outline: none;
   transition: border-color .15s;
 }
-.field input:focus { border-color: var(--ink); }
+.field input:focus { border-color: var(--ink-3); }
 .field input::placeholder { color: var(--rule-2); }
 .field-hint { font-size: 11px; color: var(--ink-3); margin-top: 4px; line-height: 1.4; }
 
@@ -133,10 +135,10 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 .send-opt {
   display: flex; align-items: center; gap: 14px;
   padding: 13px 14px; border-radius: 9px;
-  border: 1.5px solid var(--rule-2); background: var(--white);
+  border: 1.5px solid var(--rule-2); background: #242118;
   cursor: pointer; transition: all .15s;
 }
-.send-opt:hover { border-color: var(--ink); transform: translateX(3px); }
+.send-opt:hover { border-color: var(--ink-3); transform: translateX(3px); }
 .send-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
 .send-opt-text strong { display: block; font-size: 13px; font-weight: 600; }
 .send-opt-text span { font-size: 11px; color: var(--ink-3); }
@@ -171,12 +173,13 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 .day-meta { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300; color: var(--ink-3); letter-spacing: .05em; text-align: right; line-height: 1.8; }
 
 .focus-bar {
-  background: var(--ink); border-radius: 10px;
-  padding: 16px 22px; display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+  background: #141210; border: 1px solid var(--rule);
+  border-radius: 10px; padding: 16px 22px;
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
 }
 .focus-label { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: #555; white-space: nowrap; }
-.focus-input { flex: 1; background: transparent; border: none; color: #F2EDE4; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 17px; outline: none; }
-.focus-input::placeholder { color: #444; }
+.focus-input { flex: 1; background: transparent; border: none; color: var(--ink); font-family: 'Instrument Serif', serif; font-style: italic; font-size: 17px; outline: none; }
+.focus-input::placeholder { color: var(--ink-3); }
 
 /* ── INBOX ── */
 .inbox-banner {
@@ -260,13 +263,13 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 14px; }
 .grid-1  { display: grid; grid-template-columns: 1fr; gap: 14px; }
 
-.card { background: var(--white); border-radius: var(--r); box-shadow: var(--shadow-sm); overflow: hidden; transition: box-shadow .2s; }
-.card:hover { box-shadow: var(--shadow-md); }
+.card { background: var(--white); border-radius: var(--r); box-shadow: 0 2px 8px rgba(0,0,0,.3); overflow: hidden; transition: box-shadow .2s; border: 1px solid var(--rule); }
+.card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.4); }
 .card-hd { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px 12px; border-bottom: 1px solid var(--rule); }
 .card-hd-left { display: flex; align-items: center; gap: 9px; }
 .card-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .card-title { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
-.card-ct { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300; color: var(--ink-3); background: var(--bg); padding: 2px 8px; border-radius: 20px; }
+.card-ct { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 300; color: var(--ink-3); background: var(--surface); padding: 2px 8px; border-radius: 20px; }
 
 .card-pro      .card-hd { background: var(--pro-bg);      border-bottom-color: var(--pro-border); }
 .card-pro      .card-dot { background: var(--pro-dot); }
@@ -286,7 +289,7 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   border-radius: 5px; margin: 0 -3px; transition: background .1s;
 }
 .task-item:last-of-type { border-bottom: none; }
-.task-item:hover { background: var(--bg); }
+.task-item:hover { background: var(--surface); }
 .task-chk {
   width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid var(--rule-2);
   flex-shrink: 0; cursor: pointer; appearance: none; -webkit-appearance: none;
@@ -320,7 +323,7 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   padding: 7px 3px 0; margin: 3px -3px 0;
   border-radius: 5px; cursor: text; transition: background .1s;
 }
-.add-task-row:hover { background: var(--bg); }
+.add-task-row:hover { background: var(--surface); }
 .add-icon {
   width: 15px; height: 15px; border-radius: 4px; border: 1.5px dashed var(--rule-2);
   display: flex; align-items: center; justify-content: center;
@@ -379,16 +382,17 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 /* ── PRINT ── */
 @media print {
   @page { size: letter; margin: .55in .65in; }
-  body { background: white; }
+  body { background: white !important; color: black !important; }
   .nav, .overlay, .toast, .task-del, .step-del-btn, .add-task-row,
   .add-proj-btn, .add-step-row, .inbox-add, .inbox-sort-btns,
   .inbox-source, .btn { display: none !important; }
   .main { max-width: 100%; padding: 0; margin: 0; }
-  .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+  .card { box-shadow: none !important; border: 1px solid #ddd !important; break-inside: avoid; background: white !important; }
   .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-  .day-title { font-size: 28px; }
-  .focus-bar { background: #f0ede8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .focus-input { color: #1c1a16 !important; }
+  .day-title { font-size: 28px; color: black !important; }
+  .focus-bar { background: #f5f5f5 !important; border: 1px solid #ddd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .focus-input { color: black !important; }
+  * { color: black !important; }
 }
 
 @media (max-width: 700px) {
@@ -420,7 +424,7 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 </nav>
 
 <!-- CONFIG MODAL -->
-<div class="overlay" id="config-overlay">
+<div class="overlay" id="config-overlay" style="display:none">
   <div class="modal">
     <button class="modal-close" onclick="closeOverlay('config-overlay')">×</button>
     <h2>Connect Supabase</h2>
@@ -446,7 +450,7 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 </div>
 
 <!-- SEND MODAL -->
-<div class="overlay" id="send-overlay">
+<div class="overlay" id="send-overlay" style="display:none">
   <div class="modal">
     <button class="modal-close" onclick="closeOverlay('send-overlay')">×</button>
     <h2>Send today's list</h2>
@@ -949,11 +953,14 @@ function delStep(pi,si)      { S.projects[pi].steps.splice(si,1); renderProjects
 
 // ─── OVERLAYS ───
 function openConfig() {
-  document.getElementById('cfg-url').value     = CFG.url  || '';
-  document.getElementById('cfg-key').value     = CFG.key  || '';
-  document.getElementById('cfg-webhook').value = CFG.webhook || '';
+  const urlEl = document.getElementById('cfg-url');
+  const keyEl = document.getElementById('cfg-key');
+  const wbEl  = document.getElementById('cfg-webhook');
+  if (urlEl) urlEl.value = CFG.url  || '';
+  if (keyEl) keyEl.value = CFG.key  || '';
+  if (wbEl)  wbEl.value  = CFG.webhook || '';
   const el = document.getElementById('config-overlay');
-  el.style.display = 'flex';
+  if (el) el.style.display = 'flex';
 }
 function openSend() {
   document.getElementById('send-overlay').style.display = 'flex';
@@ -1071,7 +1078,8 @@ seed();
 renderAll();
 document.getElementById('focus-input').value = S.focus || '';
 document.getElementById('focus-input').addEventListener('input', e => { S.focus = e.target.value; save(); });
-document.getElementById('settings-btn').addEventListener('click', openConfig);
+const settingsBtn = document.getElementById('settings-btn');
+if (settingsBtn) settingsBtn.addEventListener('click', openConfig);
 if (CFG.url && CFG.key) initSupabase();
 else document.getElementById('inbox-hint').textContent = 'Connect Supabase via ⚙ settings (bottom of page)';
 </script>
