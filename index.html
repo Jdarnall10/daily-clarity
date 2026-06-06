@@ -8,38 +8,38 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --bg: #EDEAE3;
-  --surface: #F4F1EB;
-  --white: #FDFCF9;
-  --ink: #1E1C18;
-  --ink-2: #3E3C38;
-  --ink-3: #8A8680;
-  --rule: #D8D4CC;
-  --rule-2: #C4BFB6;
+  --bg: #2C3830;
+  --surface: #344038;
+  --white: #3D4A42;
+  --ink: #E8F0EA;
+  --ink-2: #C0CEC2;
+  --ink-3: #7A9080;
+  --rule: #3E4E44;
+  --rule-2: #4E6054;
 
-  --inbox-bg: #FBF5E6;
-  --inbox-dot: #B8720E;
-  --inbox-border: #E8D4A0;
+  --inbox-bg: #2A3828;
+  --inbox-dot: #D4A040;
+  --inbox-border: #4A5840;
 
-  --pro-bg: #EAF0F8;
-  --pro-dot: #1A4A8C;
-  --pro-border: #B8CCEC;
+  --pro-bg: #243040;
+  --pro-dot: #6AAAE0;
+  --pro-border: #2E4060;
 
-  --personal-bg: #EAF4EE;
-  --personal-dot: #1A6635;
-  --personal-border: #A8D8B8;
+  --personal-bg: #243428;
+  --personal-dot: #60C080;
+  --personal-border: #2E5038;
 
-  --goals-bg: #F2ECF8;
-  --goals-dot: #5A2A8C;
-  --goals-border: #CCB0E8;
+  --goals-bg: #302840;
+  --goals-dot: #B080E0;
+  --goals-border: #483860;
 
-  --projects-bg: #F8EDEA;
-  --projects-dot: #8C2A1A;
-  --projects-border: #E8B8A8;
+  --projects-bg: #3A2A28;
+  --projects-dot: #E08060;
+  --projects-border: #583830;
 
-  --accent: #B84C1C;
-  --shadow-sm: 0 1px 3px rgba(28,26,22,.07), 0 2px 8px rgba(28,26,22,.05);
-  --shadow-md: 0 2px 8px rgba(28,26,22,.10), 0 8px 24px rgba(28,26,22,.07);
+  --accent: #C86030;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.15);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.25), 0 8px 24px rgba(0,0,0,.2);
   --r: 10px;
 }
 
@@ -424,32 +424,6 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
   </div>
 </nav>
 
-<!-- CONFIG MODAL -->
-<div class="overlay" id="config-overlay" style="display:none">
-  <div class="modal">
-    <button class="modal-close" onclick="closeOverlay('config-overlay')">×</button>
-    <h2>Connect Supabase</h2>
-    <p class="modal-sub">Paste your Supabase project URL and anon key. These are saved locally in your browser — never sent anywhere else.</p>
-    <div class="field">
-      <label>Supabase Project URL</label>
-      <input id="cfg-url" placeholder="https://xxxxxxxxxxxx.supabase.co" />
-      <div class="field-hint">Settings → API → Project URL</div>
-    </div>
-    <div class="field">
-      <label>Supabase Publishable Key</label>
-      <input id="cfg-key" placeholder="sb_publishable_..." />
-      <div class="field-hint">Settings → API Keys → Publishable key</div>
-    </div>
-    <div class="field">
-      <label>Zapier Webhook URL <span style="color:var(--rule-2)">(optional — paste after you create it)</span></label>
-      <input id="cfg-webhook" placeholder="https://hooks.zapier.com/hooks/catch/..." />
-      <div class="field-hint">From your Zapier "Catch Hook" trigger step</div>
-    </div>
-    <button class="btn btn-accent" style="width:100%;justify-content:center;padding:10px" onclick="saveConfig()">Save &amp; connect</button>
-    <button class="modal-cancel" onclick="closeOverlay('config-overlay')">Cancel</button>
-  </div>
-</div>
-
 <!-- SEND MODAL -->
 <div class="overlay" id="send-overlay" style="display:none">
   <div class="modal">
@@ -572,10 +546,32 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
       </div>
     </div>
   </div>
-  <!-- FOOTER -->
-  <div style="margin-top:40px;padding-top:16px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;">
+  <!-- INLINE CONFIG -->
+  <div id="config-section" style="margin-top:40px;padding:24px;background:var(--surface);border-radius:12px;border:1px solid var(--rule-2);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px;">Supabase Connection</div>
+        <div style="font-size:12px;color:var(--ink-3);">Paste your credentials to enable real-time Inbox capture from Slack &amp; email.</div>
+      </div>
+      <span class="conn-pill disconnected" id="conn-pill-2">○ not connected</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div>
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px;">Project URL</label>
+        <input id="cfg-url" placeholder="https://xxxx.supabase.co" style="width:100%;padding:8px 10px;border:1.5px solid var(--rule-2);border-radius:7px;font-family:'DM Mono',monospace;font-size:11px;background:var(--bg);color:var(--ink);outline:none;" />
+      </div>
+      <div>
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px;">Publishable Key</label>
+        <input id="cfg-key" placeholder="sb_publishable_..." style="width:100%;padding:8px 10px;border:1.5px solid var(--rule-2);border-radius:7px;font-family:'DM Mono',monospace;font-size:11px;background:var(--bg);color:var(--ink);outline:none;" />
+      </div>
+    </div>
+    <button onclick="saveConfig()" style="padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;">Save &amp; Connect</button>
+    <span id="config-status" style="margin-left:12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-3);"></span>
+  </div>
+
+  <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;">
     <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-3);letter-spacing:.04em;">Daily Clarity</span>
-    <button id="settings-btn" style="background:none;border:none;font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-3);cursor:pointer;letter-spacing:.04em;padding:4px 8px;border-radius:5px;transition:all .15s;" onmouseover="this.style.background='var(--rule)';this.style.color='var(--ink)'" onmouseout="this.style.background='none';this.style.color='var(--ink-3)'">⚙ settings</button>
+    <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-3);">jdarnall10.github.io/daily-clarity</span>
   </div>
 
 </main>
@@ -594,27 +590,37 @@ function loadConfig() {
 }
 
 function saveConfig() {
-  CFG.url     = document.getElementById('cfg-url').value.trim().replace(/\/$/,'');
-  CFG.key     = document.getElementById('cfg-key').value.trim();
-  CFG.webhook = document.getElementById('cfg-webhook').value.trim();
-  if (!CFG.url || !CFG.key) { toast('⚠ Please fill in URL and key'); return; }
+  const urlEl = document.getElementById('cfg-url');
+  const keyEl = document.getElementById('cfg-key');
+  CFG.url = urlEl ? urlEl.value.trim().replace(/\/$/,'') : '';
+  CFG.key = keyEl ? keyEl.value.trim() : '';
+  CFG.webhook = '';
+  if (!CFG.url || !CFG.key) {
+    const st = document.getElementById('config-status');
+    if (st) st.textContent = '⚠ Fill in both fields first';
+    return;
+  }
   localStorage.setItem('dc-config', JSON.stringify(CFG));
-  closeOverlay('config-overlay');
+  const st = document.getElementById('config-status');
+  if (st) st.textContent = 'Saved — connecting…';
   initSupabase();
 }
 
 function openConfig() {
-  document.getElementById('cfg-url').value     = CFG.url;
-  document.getElementById('cfg-key').value     = CFG.key;
-  document.getElementById('cfg-webhook').value = CFG.webhook;
-  document.getElementById('config-overlay').classList.add('open');
+  // scroll to inline config section
+  const el = document.getElementById('config-section');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 // ─── SUPABASE ───
 function setPill(state, label) {
-  const p = document.getElementById('conn-pill');
-  p.className = `conn-pill ${state}`;
-  p.textContent = label;
+  ['conn-pill','conn-pill-2'].forEach(id => {
+    const p = document.getElementById(id);
+    if (p) { p.className = `conn-pill ${state}`; p.textContent = label; }
+  });
+  const st = document.getElementById('config-status');
+  if (state === 'connected' && st) st.textContent = '✓ Connected';
+  if (state === 'error' && st) st.textContent = '✕ Check your URL and key';
 }
 
 async function initSupabase() {
@@ -626,7 +632,6 @@ async function initSupabase() {
     const { error } = await supabase.from('inbox_tasks').select('id').limit(1);
     if (error) throw error;
     setPill('connected', '● connected');
-    document.querySelector('.btn-warn').textContent = '⚙ Supabase';
     toast('✓ Connected to Supabase');
     await loadInboxFromDB();
     subscribeRealtime();
@@ -1099,10 +1104,17 @@ renderAll();
 wireTaskInputs();
 document.getElementById('focus-input').value = S.focus || '';
 document.getElementById('focus-input').addEventListener('input', e => { S.focus = e.target.value; save(); });
-const settingsBtn = document.getElementById('settings-btn');
-if (settingsBtn) settingsBtn.addEventListener('click', openConfig);
-if (CFG.url && CFG.key) initSupabase();
-else document.getElementById('inbox-hint').textContent = 'Connect Supabase via ⚙ settings (bottom of page)';
+// populate inline config fields from saved config
+const urlEl = document.getElementById('cfg-url');
+const keyEl = document.getElementById('cfg-key');
+if (urlEl && CFG.url) urlEl.value = CFG.url;
+if (keyEl && CFG.key) keyEl.value = CFG.key;
+if (CFG.url && CFG.key) {
+  initSupabase();
+} else {
+  const hint = document.getElementById('inbox-hint');
+  if (hint) hint.textContent = 'Scroll down to connect Supabase and enable capture';
+}
 </script>
 </body>
 </html>
