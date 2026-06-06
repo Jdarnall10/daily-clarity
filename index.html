@@ -8,38 +8,48 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --bg: #2C3830;
-  --surface: #344038;
-  --white: #3D4A42;
-  --ink: #E8F0EA;
-  --ink-2: #C0CEC2;
-  --ink-3: #7A9080;
-  --rule: #3E4E44;
-  --rule-2: #4E6054;
+  /* Page background — warm dark slate, not green */
+  --bg: #1A1D2E;
+  /* Card surfaces — slightly lighter, clearly distinct */
+  --surface: #232638;
+  --white: #2C3048;
+  /* Text */
+  --ink: #E8E6F0;
+  --ink-2: #B0AECA;
+  --ink-3: #6A6888;
+  /* Borders */
+  --rule: #2E3250;
+  --rule-2: #3E4268;
 
-  --inbox-bg: #2A3828;
-  --inbox-dot: #D4A040;
-  --inbox-border: #4A5840;
+  /* Inbox — warm amber tint */
+  --inbox-bg: #252030;
+  --inbox-dot: #E0A030;
+  --inbox-border: #403030;
 
-  --pro-bg: #243040;
-  --pro-dot: #6AAAE0;
-  --pro-border: #2E4060;
+  /* Professional — cool blue tint */
+  --pro-bg: #1C2540;
+  --pro-dot: #60A0E8;
+  --pro-border: #283560;
 
-  --personal-bg: #243428;
-  --personal-dot: #60C080;
-  --personal-border: #2E5038;
+  /* Personal — teal/sage tint */
+  --personal-bg: #1C2C30;
+  --personal-dot: #50C0A0;
+  --personal-border: #284048;
 
-  --goals-bg: #302840;
-  --goals-dot: #B080E0;
-  --goals-border: #483860;
+  /* Goals — warm violet tint */
+  --goals-bg: #251C38;
+  --goals-dot: #C080F0;
+  --goals-border: #3A2858;
 
-  --projects-bg: #3A2A28;
-  --projects-dot: #E08060;
-  --projects-border: #583830;
+  /* Projects — terracotta tint */
+  --projects-bg: #2A1E28;
+  --projects-dot: #E07080;
+  --projects-border: #442030;
 
-  --accent: #C86030;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.15);
-  --shadow-md: 0 2px 8px rgba(0,0,0,.25), 0 8px 24px rgba(0,0,0,.2);
+  --accent: #6060E0;
+  --accent-hover: #5050C8;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.3), 0 2px 10px rgba(0,0,0,.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.3);
   --r: 10px;
 }
 
@@ -48,10 +58,10 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 
 /* ── NAV ── */
 .nav {
-  background: #1E1C18; height: 52px;
+  background: #0F1018; height: 52px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 28px; position: sticky; top: 0; z-index: 50;
-  border-bottom: 1px solid #2A2820;
+  border-bottom: 1px solid #1E2038;
 }
 .nav-brand { display: flex; align-items: baseline; gap: 10px; }
 .nav-logo { font-family: 'Instrument Serif', serif; font-size: 19px; color: #F0EAE0; letter-spacing: .01em; }
@@ -79,7 +89,7 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 .btn-dim    { background: #2A2720; color: #888; border: 1px solid #3A3630; }
 .btn-dim:hover { background: #343028; color: #bbb; }
 .btn-accent { background: var(--accent); color: #fff; }
-.btn-accent:hover { background: #a04018; }
+.btn-accent:hover { background: var(--accent-hover); }
 .btn-outline { background: transparent; color: #888; border: 1px solid #3A3630; }
 .btn-outline:hover { background: #2A2720; color: #ccc; }
 .btn-warn { background: #3a1a08; color: #c07040; border: 1px solid #5a2a10; }
@@ -175,12 +185,13 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
 .day-meta { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 300; color: var(--ink-3); letter-spacing: .05em; text-align: right; line-height: 1.8; }
 
 .focus-bar {
-  background: #1E1C18; border-radius: 10px;
-  padding: 16px 22px; display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+  background: #0F1018; border: 1px solid #1E2038;
+  border-radius: 10px; padding: 16px 22px;
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
 }
-.focus-label { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: #555; white-space: nowrap; }
-.focus-input { flex: 1; background: transparent; border: none; color: #F0EAE0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 17px; outline: none; }
-.focus-input::placeholder { color: #444; }
+.focus-label { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: #3E4268; white-space: nowrap; }
+.focus-input { flex: 1; background: transparent; border: none; color: #E8E6F0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 17px; outline: none; }
+.focus-input::placeholder { color: #3E4268; }
 
 /* ── INBOX ── */
 .inbox-banner {
@@ -420,6 +431,7 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
     <span class="conn-pill disconnected" id="conn-pill">○ offline</span>
     <button class="btn btn-dim" onclick="window.print()">Print</button>
     <button class="btn btn-outline" onclick="openSend()">↗ Send</button>
+    <button class="btn btn-dim" onclick="document.getElementById('settings-overlay').style.display='flex'" style="font-size:14px;padding:6px 10px;" title="Settings">⚙</button>
     <button class="btn btn-accent" onclick="newDay()">+ New day</button>
   </div>
 </nav>
@@ -546,35 +558,42 @@ body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color:
       </div>
     </div>
   </div>
-  <!-- INLINE CONFIG -->
-  <div id="config-section" style="margin-top:40px;padding:24px;background:var(--surface);border-radius:12px;border:1px solid var(--rule-2);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div>
-        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px;">Supabase Connection</div>
-        <div style="font-size:12px;color:var(--ink-3);">Paste your credentials to enable real-time Inbox capture from Slack &amp; email.</div>
-      </div>
-      <span class="conn-pill disconnected" id="conn-pill-2">○ not connected</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-      <div>
-        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px;">Project URL</label>
-        <input id="cfg-url" placeholder="https://xxxx.supabase.co" style="width:100%;padding:8px 10px;border:1.5px solid var(--rule-2);border-radius:7px;font-family:'DM Mono',monospace;font-size:11px;background:var(--bg);color:var(--ink);outline:none;" />
-      </div>
-      <div>
-        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px;">Publishable Key</label>
-        <input id="cfg-key" placeholder="sb_publishable_..." style="width:100%;padding:8px 10px;border:1.5px solid var(--rule-2);border-radius:7px;font-family:'DM Mono',monospace;font-size:11px;background:var(--bg);color:var(--ink);outline:none;" />
-      </div>
-    </div>
-    <button onclick="saveConfig()" style="padding:9px 20px;background:var(--accent);color:white;border:none;border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;">Save &amp; Connect</button>
-    <span id="config-status" style="margin-left:12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-3);"></span>
-  </div>
-
-  <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;">
+  <div style="margin-top:40px;padding-top:12px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;">
     <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-3);letter-spacing:.04em;">Daily Clarity</span>
     <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-3);">jdarnall10.github.io/daily-clarity</span>
   </div>
 
 </main>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-overlay" style="display:none;position:fixed;inset:0;background:rgba(10,10,20,.7);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+  <div style="background:#232638;border-radius:16px;padding:32px;width:460px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,.6);position:relative;border:1px solid #3E4268;">
+    <button onclick="document.getElementById('settings-overlay').style.display='none'" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:#6A6888;cursor:pointer;line-height:1;padding:4px 6px;border-radius:4px;">×</button>
+    <div style="font-family:'Instrument Serif',serif;font-size:22px;color:#E8E6F0;margin-bottom:4px;">Settings</div>
+    <div style="font-size:12px;color:#6A6888;margin-bottom:24px;line-height:1.5;">Connect Supabase to enable real-time task capture from Slack &amp; email. Saved locally in your browser only.</div>
+
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6A6888;margin-bottom:6px;">Supabase Project URL</label>
+      <input id="cfg-url" placeholder="https://xxxxxxxxxxxx.supabase.co"
+        style="width:100%;padding:10px 12px;border:1.5px solid #3E4268;border-radius:8px;font-family:'DM Mono',monospace;font-size:12px;background:#1A1D2E;color:#E8E6F0;outline:none;" />
+      <div style="font-size:11px;color:#6A6888;margin-top:4px;">Supabase → Settings → General → Project URL</div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6A6888;margin-bottom:6px;">Publishable Key</label>
+      <input id="cfg-key" placeholder="sb_publishable_..."
+        style="width:100%;padding:10px 12px;border:1.5px solid #3E4268;border-radius:8px;font-family:'DM Mono',monospace;font-size:12px;background:#1A1D2E;color:#E8E6F0;outline:none;" />
+      <div style="font-size:11px;color:#6A6888;margin-top:4px;">Supabase → Settings → API Keys → Publishable key</div>
+    </div>
+
+    <button onclick="saveConfig()"
+      style="width:100%;padding:11px;background:#6060E0;color:white;border:none;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:background .15s;"
+      onmouseover="this.style.background='#5050C8'" onmouseout="this.style.background='#6060E0'">
+      Save &amp; Connect
+    </button>
+    <div id="config-status" style="margin-top:10px;text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:#6A6888;min-height:16px;"></div>
+  </div>
+</div>
 
 <script>
 // ─── CONFIG ───
@@ -607,20 +626,23 @@ function saveConfig() {
 }
 
 function openConfig() {
-  // scroll to inline config section
-  const el = document.getElementById('config-section');
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const urlEl = document.getElementById('cfg-url');
+  const keyEl = document.getElementById('cfg-key');
+  if (urlEl && CFG.url) urlEl.value = CFG.url;
+  if (keyEl && CFG.key) keyEl.value = CFG.key;
+  document.getElementById('settings-overlay').style.display = 'flex';
 }
 
 // ─── SUPABASE ───
 function setPill(state, label) {
-  ['conn-pill','conn-pill-2'].forEach(id => {
-    const p = document.getElementById(id);
-    if (p) { p.className = `conn-pill ${state}`; p.textContent = label; }
-  });
+  const p = document.getElementById('conn-pill');
+  if (p) { p.className = `conn-pill ${state}`; p.textContent = label; }
   const st = document.getElementById('config-status');
-  if (state === 'connected' && st) st.textContent = '✓ Connected';
-  if (state === 'error' && st) st.textContent = '✕ Check your URL and key';
+  if (state === 'connected') {
+    if (st) st.textContent = '✓ Connected successfully';
+    setTimeout(() => { document.getElementById('settings-overlay').style.display = 'none'; }, 1200);
+  }
+  if (state === 'error' && st) st.textContent = '✕ Could not connect — check your URL and key';
 }
 
 async function initSupabase() {
@@ -1104,17 +1126,16 @@ renderAll();
 wireTaskInputs();
 document.getElementById('focus-input').value = S.focus || '';
 document.getElementById('focus-input').addEventListener('input', e => { S.focus = e.target.value; save(); });
-// populate inline config fields from saved config
+// pre-fill settings modal with saved config
 const urlEl = document.getElementById('cfg-url');
 const keyEl = document.getElementById('cfg-key');
 if (urlEl && CFG.url) urlEl.value = CFG.url;
 if (keyEl && CFG.key) keyEl.value = CFG.key;
-if (CFG.url && CFG.key) {
-  initSupabase();
-} else {
-  const hint = document.getElementById('inbox-hint');
-  if (hint) hint.textContent = 'Scroll down to connect Supabase and enable capture';
-}
+// close settings overlay on backdrop click
+document.getElementById('settings-overlay').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = 'none';
+});
+if (CFG.url && CFG.key) initSupabase();
 </script>
 </body>
 </html>
